@@ -1,0 +1,10 @@
+Checks:
+  [
+    "modernize*",
+    "readability*",
+    "cppcoreguidelines*",
+    "hicpp*",
+    "bugprone*",
+    "performance*",
+  ]
+WarningsAsErrors: "*"

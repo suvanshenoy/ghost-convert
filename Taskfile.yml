@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+tasks:
+  build:
+    cmd: cmake -GNinja . -B build {{.CLI_ARGS}}
+
+  build:compile:
+    cmds:
+      - task: build
+      - task: compile
+
+  compile:
+    cmd: ninja -C build
+
+  compile:run:
+    cmds:
+      - task: compile
+      - ./bin/ghost-convert
+
+  compile:watch:
+    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task compile"
+
+  run:watch:
+    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task compile:run"
+
+  test:
+    cmds:
+      - task: compile
+      - ./bin/ghost-convert-test
+
+  test:watch:
+    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task test"
