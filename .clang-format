@@ -87,9 +87,9 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AttributeMacros:
   - __capability
-BinPackArguments: true
+BinPackArguments: false
 BinPackLongBracedList: true
-BinPackParameters: BinPack
+BinPackParameters: false
 BitFieldColonSpacing: Both
 BracedInitializerIndentWidth: -1
 BraceWrapping:
@@ -128,7 +128,7 @@ BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeColon
 BreakStringLiterals: true
 BreakTemplateDeclarations: MultiLine
-ColumnLimit: 80
+ColumnLimit: 90
 CommentPragmas: "^ IWYU pragma:"
 CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
