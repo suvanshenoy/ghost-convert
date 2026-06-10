@@ -66,8 +66,10 @@ auto FileFinder::search_by_name(FileFinder &file_finder,
   }
 
   for (const auto &path : std::filesystem::directory_iterator(search_path)) {
-    const auto &file_path = path.path();
-    if (file_path.filename() == file_name) {
+    const auto &file_path = path.path().string();
+    const auto &found_file = file_path.substr(file_path.find_last_of('/') + 1);
+
+    if (file_name.contains(found_file.substr(0, found_file.find('.')))) {
       file_finder.files.push_back(file_path);
     }
   }

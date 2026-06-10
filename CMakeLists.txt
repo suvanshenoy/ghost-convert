@@ -15,8 +15,10 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   packages
+  apps
 )
 
+add_subdirectory(apps)
 add_subdirectory(packages)
 add_subdirectory(tests)
 
@@ -43,6 +45,7 @@ if(BUILD_FTXUI)
     ftxui::dom
     ftxui::component
     packages
+    apps
   )
 endif()
 
@@ -57,6 +60,7 @@ if(BUILD_GTEST)
     GTest::gtest_main
     tests
     packages
+    apps
   )
 
   include(GoogleTest)

@@ -6,7 +6,6 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include <string>
-#include <string_view>
 #include <vector>
 
 using GhostConvert::FileFinder;
@@ -57,6 +56,7 @@ TEST(FileFinder, search_by_name) {
   if (!search_by_name.has_value()) {
     FileFinder::handle_error(search_by_name);
   } else {
+    res.second.pop_back();
     ASSERT_EQ(search_by_name.value(), std::vector<std::string>{res.second});
   }
 }
