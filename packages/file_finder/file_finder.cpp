@@ -94,10 +94,12 @@ auto FileFinder::handle_error(
       case FileFinder::FileFinderError::FileExtension:
         std::println("[error] file with extension {} not found",
                      file_finder_error_pair.second);
+        break;
 
       case FileFinder::FileFinderError::FileName:
         std::println("[error] file with name {} not found",
                      file_finder_error_pair.second);
+        break;
     }
   } else {
     auto path_error_pair = std::get<std::pair<PathError, std::string>>(value.error());
@@ -105,9 +107,11 @@ auto FileFinder::handle_error(
     switch (path_error_pair.first) {
       case PathError::NotFound:
         std::println("[error] path {} not found", path_error_pair.second);
+        break;
 
       case PathError::NotDirectory:
         std::println("[error] path {} is not a directory", path_error_pair.second);
+        break;
     }
   }
 }
