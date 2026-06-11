@@ -14,26 +14,30 @@ auto main(int argc, char **argv) -> int {
 
   for (const auto &arg : args) {
     if (static_cast<std::string_view>(arg).contains("--extension") ||
-        static_cast<std::string_view>(arg).contains("--path")) {
+        static_cast<std::string_view>(arg).contains("--path") ||
+        static_cast<std::string_view>(arg).contains("-e") ||
+        static_cast<std::string_view>(arg).contains("-p")) {
       v_args.emplace_back(arg);
     }
     if (static_cast<std::string_view>(arg).contains("--name") ||
-        static_cast<std::string_view>(arg).contains("--path")) {
+        static_cast<std::string_view>(arg).contains("--path") ||
+        static_cast<std::string_view>(arg).contains("--case-sensitive") ||
+        static_cast<std::string_view>(arg).contains("-n") ||
+        static_cast<std::string_view>(arg).contains("-p") ||
+        static_cast<std::string_view>(arg).contains("-cs")) {
       v_args.emplace_back(arg);
     }
   }
 
   auto check_if_arg_exist = [v_args](std::string_view arg) -> bool {
-    return std::ranges::any_of(
-        v_args.begin(), v_args.end(), [arg](std::string_view foo) -> bool {
-          return foo.substr(0, foo.find('=')) == arg;
-        });
+    return std::ranges::any_of(v_args, [arg](std::string_view foo) -> bool {
+      return foo.substr(0, foo.find('=')) == arg;
+    });
   };
 
-  if (check_if_arg_exist("--extension")) {
+  if (check_if_arg_exist("--extension") || check_if_arg_exist("-e")) {
     Cli::list_files_by_extension(v_args.at(0), v_args.at(1));
-  } else if (check_if_arg_exist("--name")) {
-    Cli::list_files_by_name(v_args.at(0), v_args.at(1));
-  } else {
+  } else if (check_if_arg_exist("--name") || check_if_arg_exist("-n")) {
+    Cli::list_files_by_name(v_args.at(0), v_args.at(1), v_args.at(3));
   }
 }

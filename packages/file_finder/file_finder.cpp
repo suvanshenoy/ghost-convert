@@ -1,5 +1,7 @@
 #include "file_finder.hpp"
 #include "../errors.hpp"
+#include <algorithm>
+#include <cctype>
 #include <expected>
 #include <filesystem>
 #include <print>
@@ -48,7 +50,8 @@ auto FileFinder::search_by_extension(FileFinder &file_finder,
 
 auto FileFinder::search_by_name(FileFinder &file_finder,
                                 std::string_view file_name,
-                                std::string_view search_path)
+                                std::string_view search_path,
+                                bool is_case_sensitive = false)
     -> std::expected<std::vector<std::string>,
                      std::variant<std::pair<PathError, std::string>,
                                   std::pair<FileFinderError, std::string>>> {
@@ -67,9 +70,17 @@ auto FileFinder::search_by_name(FileFinder &file_finder,
 
   for (const auto &path : std::filesystem::directory_iterator(search_path)) {
     const auto &file_path = path.path().string();
-    const auto &found_file = file_path.substr(file_path.find_last_of('/') + 1);
+    auto found_file = file_path.substr(file_path.find_last_of('/') + 1);
 
-    if (file_name.contains(found_file.substr(0, found_file.find('.')))) {
+    if (is_case_sensitive) {
+      std::ranges::transform(found_file.cbegin(),
+                             found_file.cend(),
+                             found_file.begin(),
+                             [](unsigned char arg) -> int { return std::tolower(arg); });
+    }
+
+    if (file_name.contains(found_file.substr(0, found_file.find('.'))) ||
+        file_name.contains(found_file.substr(0, found_file.find(' ')))) {
       file_finder.files.push_back(file_path);
     }
   }
