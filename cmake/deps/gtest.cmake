@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20..4.2.3)
+cmake_minimum_required(VERSION 3.20..4.3)
 find_package(GTest REQUIRED)
 include(FetchContent)
 message("Fetching gtest source from git")

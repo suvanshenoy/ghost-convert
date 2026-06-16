@@ -1,0 +1,5 @@
+[tools]
+cmake = "4.3"
+dprint = "latest"
+ninja = "latest"
+task = "latest"

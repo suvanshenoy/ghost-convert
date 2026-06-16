@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20..4.2.3)
+cmake_minimum_required(VERSION 3.20..4.3)
 project(ghost-convert CXX)
 
 include("${CMAKE_SOURCE_DIR}/cmake/options.cmake")
