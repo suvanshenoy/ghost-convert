@@ -1,4 +1,4 @@
-#include "apps/cli/cli.hpp"
+#include "ghost_convert_cli.hpp"
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>

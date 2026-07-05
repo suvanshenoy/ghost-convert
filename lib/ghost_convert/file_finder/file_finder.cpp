@@ -100,7 +100,7 @@ auto FileFinder::handle_error(
 
   if (std::holds_alternative<std::pair<FileFinder::FileFinderError, std::string>>(
           value.error())) {
-    auto file_finder_error_pair =
+    const auto &file_finder_error_pair =
         std::get<std::pair<FileFinder::FileFinderError, std::string>>(value.error());
 
     switch (file_finder_error_pair.first) {
@@ -115,7 +115,8 @@ auto FileFinder::handle_error(
         break;
     }
   } else {
-    auto path_error_pair = std::get<std::pair<PathError, std::string>>(value.error());
+    const auto &path_error_pair =
+        std::get<std::pair<PathError, std::string>>(value.error());
 
     switch (path_error_pair.first) {
       case PathError::NotFound:

@@ -10,17 +10,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 
 add_executable(${PROJECT_NAME}
-  main.cpp
+  "${CMAKE_SOURCE_DIR}/lib/ghost_convert.cpp"
 )
 
 target_link_libraries(${PROJECT_NAME}
-  packages
-  apps
+  ghost_convert
+  lib
 )
 
-add_subdirectory(apps)
-add_subdirectory(packages)
-add_subdirectory(tests)
+
+add_subdirectory(lib/ghost_convert)
+add_subdirectory(lib)
+add_subdirectory(test)
 
 target_compile_options(${PROJECT_NAME}
   PRIVATE
@@ -44,23 +45,23 @@ if(BUILD_FTXUI)
     ftxui::screen
     ftxui::dom
     ftxui::component
-    packages
-    apps
+    lib
+    ghost_convert
   )
 endif()
 
 if(BUILD_GTEST)
   add_executable(ghost-convert-test
-    "${CMAKE_SOURCE_DIR}/tests/main_test.cpp"
+    "${CMAKE_SOURCE_DIR}/test/main_test.cpp"
   )
   message("building gtest")
   include("${CMAKE_SOURCE_DIR}/cmake/deps/gtest.cmake")
   target_link_libraries(ghost-convert-test PRIVATE
     GTest::gtest
     GTest::gtest_main
-    tests
-    packages
-    apps
+    test
+    lib
+    ghost_convert
   )
 
   include(GoogleTest)
