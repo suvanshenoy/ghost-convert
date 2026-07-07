@@ -1,5 +1,5 @@
-#include "../../lib/ghost_convert/errors.hpp"
-#include "../../lib/ghost_convert/file_finder/file_finder.hpp"
+#include "../errors.hpp"
+#include "file_finder.hpp"
 #include <cstddef>
 #include <filesystem>
 #include <format>
@@ -13,9 +13,9 @@ using GhostConvert::PathError;
 
 auto mock_file_finder(std::vector<std::string> mock_files)
     -> std::pair<std::string, std::vector<std::string>> {
-  const auto &root_current_path = std::filesystem::current_path();
+  const auto &root_current_path = std::filesystem::current_path().string();
   std::filesystem::current_path(
-      std::format("{}/test/file_finder", root_current_path.string()));
+      std::format("{}/lib/ghost_convert/file_finder", root_current_path));
 
   std::filesystem::create_directory("mock_files");
   const auto &prev_current_path = std::filesystem::current_path().string();
@@ -32,6 +32,8 @@ auto mock_file_finder(std::vector<std::string> mock_files)
     outfile.open(mock_file);
     outfile.close();
   }
+
+  std::filesystem::current_path(root_current_path);
   return {current_path, mock_files};
 }
 

@@ -4,4 +4,5 @@ file(GLOB_RECURSE SRCS
   "${CMAKE_SOURCE_DIR}/lib/ghost_convert/**/*.cpp"
   "${CMAKE_SOURCE_DIR}/lib/ghost_convert/*.cpp"
 )
+list(FILTER SRCS EXCLUDE REGEX ".*test\\.cpp$")
 target_sources(ghost_convert PUBLIC ${SRCS})

@@ -20,7 +20,6 @@ auto FileFinder::search_by_extension(FileFinder &file_finder,
     -> std::expected<std::vector<std::string>,
                      std::variant<std::pair<PathError, std::string>,
                                   std::pair<FileFinderError, std::string>>> {
-
   std::filesystem::directory_entry path_direntry(search_path);
 
   if (!path_direntry.exists()) {
@@ -97,7 +96,6 @@ auto FileFinder::handle_error(
                         std::variant<std::pair<PathError, std::string>,
                                      std::pair<FileFinderError, std::string>>> &value)
     -> void {
-
   if (std::holds_alternative<std::pair<FileFinder::FileFinderError, std::string>>(
           value.error())) {
     const auto &file_finder_error_pair =
