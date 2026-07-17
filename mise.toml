@@ -1,5 +1,5 @@
 [tools]
+"aqua:go-task/task" = "latest"
 cmake = "4.3"
 dprint = "latest"
 ninja = "latest"
-task = "latest"

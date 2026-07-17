@@ -12,23 +12,24 @@ tasks:
       - task: compile
 
   compile:
-    cmd: ninja -C build
+    cmds:
+      - ninja -C build
+      - sudo cp -rvf ./bin/ghost-convert /usr/local/bin/ghost-convert
 
   compile:run:
     cmds:
       - task: compile
-      - ./bin/ghost-convert
-
-  compile:watch:
-    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task compile"
-
-  run:watch:
-    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task compile:run"
+      - ghost-convert {{.CLI_ARGS}}
 
   test:
     cmds:
       - task: compile
-      - ./bin/ghost-convert-test
+      - ./bin/ghost-convert-test {{.CLI_ARGS}}
 
   test:watch:
-    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- "task test"
+    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- task test
+
+  cleanup:
+    cmds:
+      - rm -r build
+      - rm -r bin

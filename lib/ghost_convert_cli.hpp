@@ -7,6 +7,7 @@ struct Cli {
     static auto list_files_by_extension(std::string_view, std::string_view) -> void;
     static auto list_files_by_name(std::string_view, std::string_view, std::string_view)
         -> void;
+    static auto print_usage() -> void;
 };
 } // namespace GhostConvert
 

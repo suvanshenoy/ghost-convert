@@ -1,4 +1,4 @@
-#include "../errors.hpp"
+#include "../error.hpp"
 #include "file_finder.hpp"
 #include <cstddef>
 #include <filesystem>
@@ -9,7 +9,7 @@
 #include <vector>
 
 using GhostConvert::FileFinder;
-using GhostConvert::PathError;
+using GhostConvert::Error::PathError;
 
 auto mock_file_finder(std::vector<std::string> mock_files)
     -> std::pair<std::string, std::vector<std::string>> {

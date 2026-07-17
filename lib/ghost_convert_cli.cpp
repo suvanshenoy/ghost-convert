@@ -57,3 +57,12 @@ auto Cli::list_files_by_name(std::string_view arg1,
     }
   }
 }
+
+auto Cli::print_usage() -> void {
+  std::println("Usage: ghost-convert [options] <command>");
+  std::println();
+  std::println("Options:");
+  std::println("  {}\t\t\t{}", "--name", "Name of the file to find");
+  std::println("  {}\t\t\t{}", "--path", "Path of the directory");
+  std::println("  {}\t\t{}", "--case-sensitive", "Case sensitivity");
+}
