@@ -4,6 +4,6 @@
 #include <cstdint>
 
 namespace GhostConvert {
-enum class PathError : std::uint8_t { NotFound, NotDirectory };
+enum struct PathError : std::uint8_t { NotFound, NotDirectory };
 }
 #endif

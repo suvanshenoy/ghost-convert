@@ -14,17 +14,12 @@ auto main(int argc, char **argv) -> int {
 
   for (const auto &arg : args) {
     if (static_cast<std::string_view>(arg).contains("--extension") ||
-        static_cast<std::string_view>(arg).contains("--path") ||
-        static_cast<std::string_view>(arg).contains("-e") ||
-        static_cast<std::string_view>(arg).contains("-p")) {
+        static_cast<std::string_view>(arg).contains("--path")) {
       v_args.emplace_back(arg);
     }
     if (static_cast<std::string_view>(arg).contains("--name") ||
         static_cast<std::string_view>(arg).contains("--path") ||
-        static_cast<std::string_view>(arg).contains("--case-sensitive") ||
-        static_cast<std::string_view>(arg).contains("-n") ||
-        static_cast<std::string_view>(arg).contains("-p") ||
-        static_cast<std::string_view>(arg).contains("-cs")) {
+        static_cast<std::string_view>(arg).contains("--case-sensitive")) {
       v_args.emplace_back(arg);
     }
   }
@@ -35,9 +30,9 @@ auto main(int argc, char **argv) -> int {
     });
   };
 
-  if (check_if_arg_exist("--extension") || check_if_arg_exist("-e")) {
+  if (check_if_arg_exist("--extension")) {
     Cli::list_files_by_extension(v_args.at(0), v_args.at(1));
-  } else if (check_if_arg_exist("--name") || check_if_arg_exist("-n")) {
+  } else if (check_if_arg_exist("--name")) {
     Cli::list_files_by_name(v_args.at(0), v_args.at(1), v_args.at(3));
   }
 }

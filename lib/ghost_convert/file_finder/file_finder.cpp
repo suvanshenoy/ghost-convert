@@ -5,6 +5,8 @@
 #include <expected>
 #include <filesystem>
 #include <print>
+#include <ranges>
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -32,10 +34,10 @@ auto FileFinder::search_by_extension(FileFinder &file_finder,
         std::make_pair(PathError::NotDirectory, path_direntry.path().string()));
   }
 
-  for (const auto &path : std::filesystem::directory_iterator(search_path)) {
+  for (const auto &path : std::filesystem::recursive_directory_iterator(search_path)) {
     const auto &file_path = path.path().string();
     if (file_path.substr(file_path.find_last_of('.') + 1) == file_extension) {
-      file_finder.files.push_back(file_path);
+      file_finder.files.emplace_back(file_path);
     }
   }
 
@@ -67,20 +69,24 @@ auto FileFinder::search_by_name(FileFinder &file_finder,
         std::make_pair(PathError::NotDirectory, path_direntry.path().string()));
   }
 
-  for (const auto &path : std::filesystem::directory_iterator(search_path)) {
-    const auto &file_path = path.path().string();
-    auto found_file = file_path.substr(file_path.find_last_of('/') + 1);
+  for (const auto &path : std::filesystem::recursive_directory_iterator(search_path)) {
+    auto file_path = path.path().string();
+
+    std::stringstream ss;
+    ss << file_path;
+    const auto &untransformed_file_path = ss.str();
 
     if (is_case_sensitive) {
-      std::ranges::transform(found_file.cbegin(),
-                             found_file.cend(),
-                             found_file.begin(),
+      std::ranges::transform(file_path.cbegin(),
+                             file_path.cend(),
+                             file_path.begin(),
                              [](unsigned char arg) -> int { return std::tolower(arg); });
     }
 
-    if (file_name.contains(found_file.substr(0, found_file.find('.'))) ||
-        file_name.contains(found_file.substr(0, found_file.find(' ')))) {
-      file_finder.files.push_back(file_path);
+    for (const auto &path : file_path | std::views::split('/')) {
+      if (std::ranges::to<std::string>(path).contains(file_name)) {
+        file_finder.files.emplace_back(untransformed_file_path);
+      }
     }
   }
 
@@ -91,6 +97,7 @@ auto FileFinder::search_by_name(FileFinder &file_finder,
 
   return file_finder.files;
 }
+
 auto FileFinder::handle_error(
     const std::expected<std::vector<std::string>,
                         std::variant<std::pair<PathError, std::string>,

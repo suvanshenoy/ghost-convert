@@ -14,7 +14,7 @@ namespace GhostConvert {
 struct FileFinder {
   private:
     mutable std::vector<std::string> files;
-    enum class FileFinderError : std::uint8_t { FileExtension, FileName };
+    enum struct FileFinderError : std::uint8_t { FileExtension, FileName };
 
   public:
     static auto search_by_extension(FileFinder &, std::string_view, std::string_view)
