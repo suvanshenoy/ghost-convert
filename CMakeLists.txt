@@ -38,18 +38,6 @@ target_link_options(${PROJECT_NAME}
     -fsanitize=undefined
 )
 
-if(BUILD_FTXUI)
-  message("building ftxui")
-  include("${CMAKE_SOURCE_DIR}/cmake/deps/ftxui.cmake")
-  target_link_libraries(${PROJECT_NAME} PRIVATE
-    ftxui::screen
-    ftxui::dom
-    ftxui::component
-    lib
-    ghost_convert
-  )
-endif()
-
 if(BUILD_GTEST)
   add_executable(ghost-convert-test
     "${CMAKE_SOURCE_DIR}/test/main_test.cpp"

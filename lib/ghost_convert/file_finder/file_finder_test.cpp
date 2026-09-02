@@ -1,6 +1,5 @@
 #include "../error.hpp"
 #include "file_finder.hpp"
-#include <cstddef>
 #include <filesystem>
 #include <format>
 #include <fstream>

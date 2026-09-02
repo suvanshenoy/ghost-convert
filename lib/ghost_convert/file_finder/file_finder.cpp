@@ -1,7 +1,6 @@
 #include "file_finder.hpp"
 #include "../error.hpp"
 #include <algorithm>
-#include <cctype>
 #include <expected>
 #include <filesystem>
 #include <print>

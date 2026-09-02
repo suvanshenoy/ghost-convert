@@ -15,23 +15,28 @@ namespace GhostConvert {
 
 struct FileFinder {
   private:
-    mutable std::vector<std::string> files;
+    std::vector<std::string> files;
     enum struct FileFinderError : std::uint8_t { FileExtension, FileName };
 
   public:
-    static auto search_by_extension(FileFinder &, std::string_view, std::string_view)
+    static auto search_by_extension(FileFinder &file_finder,
+                                    std::string_view file_extension,
+                                    std::string_view search_path)
         -> std::expected<std::vector<std::string>,
                          std::variant<std::pair<PathError, std::string>,
                                       std::pair<FileFinderError, std::string>>>;
 
-    static auto search_by_name(FileFinder &, std::string_view, std::string_view, bool)
+    static auto search_by_name(FileFinder &file_finder,
+                               std::string_view file_name,
+                               std::string_view search_path,
+                               bool is_case_sensitive)
         -> std::expected<std::vector<std::string>,
                          std::variant<std::pair<PathError, std::string>,
                                       std::pair<FileFinderError, std::string>>>;
     static auto handle_error(
         const std::expected<std::vector<std::string>,
                             std::variant<std::pair<PathError, std::string>,
-                                         std::pair<FileFinderError, std::string>>> &)
+                                         std::pair<FileFinderError, std::string>>> &value)
         -> void;
 };
 } // namespace GhostConvert

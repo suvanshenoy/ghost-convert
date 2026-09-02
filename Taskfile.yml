@@ -2,6 +2,9 @@
 
 version: "3"
 
+vars:
+  EXECUTABLE: ghost-convert
+
 tasks:
   build:
     cmd: cmake -GNinja . -B build {{.CLI_ARGS}}
@@ -14,17 +17,17 @@ tasks:
   compile:
     cmds:
       - ninja -C build
-      - sudo cp -rvf ./bin/ghost-convert /usr/local/bin/ghost-convert
+      - sudo cp -rvf ./bin/{{.EXECUTABLE}} /usr/local/bin/{{.EXECUTABLE}}
 
   compile:run:
     cmds:
       - task: compile
-      - ghost-convert {{.CLI_ARGS}}
+      - "{{.EXECUTABLE}} {{.CLI_ARGS}}"
 
   test:
     cmds:
       - task: compile
-      - ./bin/ghost-convert-test {{.CLI_ARGS}}
+      - ./bin/{{.EXECUTABLE}}-test {{.CLI_ARGS}}
 
   test:watch:
     cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- task test
