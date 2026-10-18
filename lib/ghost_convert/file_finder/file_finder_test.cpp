@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-using GhostConvert::FileFinder;
 using GhostConvert::Error::PathError;
+using GhostConvert::Utility::FileFinder;
 
 auto mock_file_finder(std::vector<std::string> mock_files)
     -> std::pair<std::string, std::vector<std::string>> {

@@ -4,7 +4,7 @@
 #include <string_view>
 #include <vector>
 
-using GhostConvert::Cli;
+using GhostConvert::Core::Cli;
 
 auto main(int argc, char **argv) -> int {
   const auto &args = std::span(argv, std::size_t(argc));
