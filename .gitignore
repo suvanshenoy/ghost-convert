@@ -69,3 +69,5 @@ Testing/
 
 *.ini
 bin
+
+.task

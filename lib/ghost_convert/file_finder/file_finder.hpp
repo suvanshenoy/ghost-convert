@@ -23,15 +23,17 @@ struct FileFinder {
   private:
     std::vector<std::string> files;
     enum struct FileFinderError : std::uint8_t { FileExtension, FileName };
+    std::string_view _search_path;
 
   public:
+    explicit FileFinder(std::string_view search_path) : _search_path(search_path) {}
+
     static auto search_by_extension(FileFinder &file_finder,
-                                    std::string_view file_extension,
-                                    std::string_view search_path)
+                                    std::string_view file_extension)
         -> std::expected<std::vector<std::string>,
                          std::variant<std::pair<PathError, std::string>,
                                       std::pair<FileFinderError, std::string>>> {
-      std::filesystem::directory_entry path_direntry(search_path);
+      std::filesystem::directory_entry path_direntry(file_finder._search_path);
 
       if (!path_direntry.exists()) {
         return std::unexpected(
@@ -44,7 +46,7 @@ struct FileFinder {
       }
 
       for (const auto &path :
-           std::filesystem::recursive_directory_iterator(search_path)) {
+           std::filesystem::recursive_directory_iterator(file_finder._search_path)) {
         const auto &file_path = path.path().string();
         if (file_path.substr(file_path.find_last_of('.') + 1) == file_extension) {
           file_finder.files.emplace_back(file_path);
@@ -61,13 +63,12 @@ struct FileFinder {
 
     static auto search_by_name(FileFinder &file_finder,
                                std::string_view file_name,
-                               std::string_view search_path,
                                bool is_case_sensitive = false)
         -> std::expected<std::vector<std::string>,
                          std::variant<std::pair<PathError, std::string>,
                                       std::pair<FileFinderError, std::string>>> {
 
-      std::filesystem::directory_entry path_direntry(search_path);
+      std::filesystem::directory_entry path_direntry(file_finder._search_path);
 
       if (!path_direntry.exists()) {
         return std::unexpected(
@@ -80,7 +81,7 @@ struct FileFinder {
       }
 
       for (const auto &path :
-           std::filesystem::recursive_directory_iterator(search_path)) {
+           std::filesystem::recursive_directory_iterator(file_finder._search_path)) {
         auto file_path = path.path().string();
 
         std::stringstream ss;

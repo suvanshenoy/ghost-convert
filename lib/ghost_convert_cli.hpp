@@ -13,16 +13,16 @@ namespace GhostConvert::Core {
 struct Cli {
     static auto list_files_by_extension(std::string_view arg1, std::string_view arg2)
         -> void {
-      FileFinder file_finder;
-
-      const auto &file_extension = arg1.substr(arg1.find("--extension=") +
-                                               std::string_view("--extension=").length());
 
       const auto &search_path =
           arg2.substr(arg2.find("--path=") + std::string_view("--path=").length());
 
-      const auto &res =
-          FileFinder::search_by_extension(file_finder, file_extension, search_path);
+      FileFinder file_finder(search_path);
+
+      const auto &file_extension = arg1.substr(arg1.find("--extension=") +
+                                               std::string_view("--extension=").length());
+
+      const auto &res = FileFinder::search_by_extension(file_finder, file_extension);
 
       if (!res.has_value()) {
         FileFinder::handle_error(res);
@@ -35,13 +35,14 @@ struct Cli {
     static auto list_files_by_name(std::string_view arg1,
                                    std::string_view arg2,
                                    std::string_view arg3) -> void {
-      FileFinder file_finder;
-
-      const auto &file_name =
-          arg1.substr(arg1.find("--name=") + std::string_view("--name=").length());
 
       const auto &search_path =
           arg2.substr(arg2.find("--path=") + std::string_view("--path=").length());
+
+      FileFinder file_finder(search_path);
+
+      const auto &file_name =
+          arg1.substr(arg1.find("--name=") + std::string_view("--name=").length());
 
       const auto &case_sensitive =
           arg3.substr(arg3.find("--case-sensitive=") +
@@ -51,8 +52,8 @@ struct Cli {
       std::istringstream iss(static_cast<std::string>(case_sensitive));
       iss >> std::boolalpha >> is_case_sensitive;
 
-      const auto &res = FileFinder::search_by_name(
-          file_finder, file_name, search_path, is_case_sensitive);
+      const auto &res =
+          FileFinder::search_by_name(file_finder, file_name, is_case_sensitive);
 
       if (!res.has_value()) {
         FileFinder::handle_error(res);

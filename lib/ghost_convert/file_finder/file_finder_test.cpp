@@ -1,4 +1,3 @@
-#include "../error.hpp"
 #include "file_finder.hpp"
 #include <filesystem>
 #include <format>
@@ -7,9 +6,9 @@
 #include <string>
 #include <vector>
 
-using GhostConvert::Error::PathError;
 using GhostConvert::Utility::FileFinder;
 
+namespace {
 auto mock_file_finder(std::vector<std::string> mock_files)
     -> std::pair<std::string, std::vector<std::string>> {
   const auto &root_current_path = std::filesystem::current_path().string();
@@ -35,12 +34,12 @@ auto mock_file_finder(std::vector<std::string> mock_files)
   std::filesystem::current_path(root_current_path);
   return {current_path, mock_files};
 }
+} // namespace
 
 TEST(FileFinder, search_by_extension) {
-  FileFinder file_finder;
   auto res = mock_file_finder(std::vector<std::string>{});
-  const auto &search_by_extension =
-      FileFinder::search_by_extension(file_finder, "pdf", res.first);
+  FileFinder file_finder(res.first);
+  const auto &search_by_extension = FileFinder::search_by_extension(file_finder, "pdf");
 
   if (!search_by_extension.has_value()) {
     FileFinder::handle_error(search_by_extension);
@@ -50,10 +49,9 @@ TEST(FileFinder, search_by_extension) {
 }
 
 TEST(FileFinder, search_by_name) {
-  FileFinder file_finder;
   auto res = mock_file_finder(std::vector<std::string>{});
-  const auto &search_by_name =
-      FileFinder::search_by_name(file_finder, "foo1", res.first, true);
+  FileFinder file_finder(res.first);
+  const auto &search_by_name = FileFinder::search_by_name(file_finder, "foo1", true);
 
   if (!search_by_name.has_value()) {
     FileFinder::handle_error(search_by_name);

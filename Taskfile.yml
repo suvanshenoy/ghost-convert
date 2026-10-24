@@ -18,6 +18,14 @@ tasks:
     cmds:
       - ninja -C build
       - sudo cp -rvf ./bin/{{.EXECUTABLE}} /usr/local/bin/{{.EXECUTABLE}}
+    sources:
+      - lib/**/*
+    generates:
+      - ./bin/{{.EXECUTABLE}}
+      - ./bin/{{.EXECUTABLE}}-test
+    status:
+      - test -f ./bin/{{.EXECUTABLE}}
+      - test -f ./bin/{{.EXECUTABLE}}-test
 
   compile:run:
     cmds:
@@ -30,7 +38,7 @@ tasks:
       - ./bin/{{.EXECUTABLE}}-test {{.CLI_ARGS}}
 
   test:watch:
-    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- task test
+    cmd: watchexec -r -c -e cpp,hpp,txt,cmake -- task test -- {{.CLI_ARGS}}
 
   cleanup:
     cmds:
